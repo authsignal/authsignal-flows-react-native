@@ -1,9 +1,3 @@
-export type AuthsignalResponse<T> = {
-  data?: T;
-  error?: string;
-  errorCode?: string;
-};
-
 export enum VerificationMethod {
   EMAIL_OTP = 'EMAIL_OTP',
   SMS = 'SMS',
