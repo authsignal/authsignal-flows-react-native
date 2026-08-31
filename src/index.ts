@@ -12,4 +12,6 @@ export {
   UserCanceledError,
 } from './errors';
 export { AuthsignalFlowPasskey } from './passkey';
+export { AuthsignalFlowSms } from './sms';
+export { AuthsignalFlowWhatsapp } from './whatsapp';
 export * from './AuthsignalFlows.types';

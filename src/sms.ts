@@ -1,11 +1,11 @@
-import type { EmailChallengeResponse, VerifyResponse } from './AuthsignalFlows.types';
+import type { SmsChallengeResponse, VerifyResponse } from './AuthsignalFlows.types';
 import AuthsignalFlowsModule from './AuthsignalFlowsModule';
 import { mapNativeError } from './errors';
 
-export class AuthsignalFlowEmail {
-  async challenge(email?: string): Promise<EmailChallengeResponse> {
+export class AuthsignalFlowSms {
+  async challenge(phoneNumber?: string): Promise<SmsChallengeResponse> {
     try {
-      return await AuthsignalFlowsModule.emailChallenge(email);
+      return await AuthsignalFlowsModule.smsChallenge(phoneNumber);
     } catch (ex) {
       throw mapNativeError(ex);
     }
@@ -16,7 +16,7 @@ export class AuthsignalFlowEmail {
    */
   async verify(verificationCode: string): Promise<VerifyResponse> {
     try {
-      return await AuthsignalFlowsModule.emailVerify(verificationCode);
+      return await AuthsignalFlowsModule.smsVerify(verificationCode);
     } catch (ex) {
       throw mapNativeError(ex);
     }

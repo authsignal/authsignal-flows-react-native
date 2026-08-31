@@ -12,6 +12,10 @@ class AuthsignalFlowsModule extends NativeModule<{}> {
   setChallengeToken = unsupported;
   emailChallenge = unsupported;
   emailVerify = unsupported;
+  smsChallenge = unsupported;
+  smsVerify = unsupported;
+  whatsappChallenge = unsupported;
+  whatsappVerify = unsupported;
   passkeyVerify = unsupported;
   passkeyCancel = unsupported;
   passkeyIsSupported = (): boolean => false;

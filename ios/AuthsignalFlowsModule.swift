@@ -15,12 +15,28 @@ public class AuthsignalFlowsModule: Module {
       try self.client().setChallengeToken(challengeToken: challengeToken)
     }
 
-    AsyncFunction("emailChallenge") { () async throws -> [String: Any?] in
-      try await self.run { try await self.client().email.challenge() }
+    AsyncFunction("emailChallenge") { (email: String?) async throws -> [String: Any?] in
+      try await self.run { try await self.client().email.challenge(email: email) }
     }
 
     AsyncFunction("emailVerify") { (verificationCode: String) async throws -> [String: Any?] in
       try await self.run { try await self.client().email.verify(verificationCode: verificationCode) }
+    }
+
+    AsyncFunction("smsChallenge") { (phoneNumber: String?) async throws -> [String: Any?] in
+      try await self.run { try await self.client().sms.challenge(phoneNumber: phoneNumber) }
+    }
+
+    AsyncFunction("smsVerify") { (verificationCode: String) async throws -> [String: Any?] in
+      try await self.run { try await self.client().sms.verify(verificationCode: verificationCode) }
+    }
+
+    AsyncFunction("whatsappChallenge") { (phoneNumber: String?) async throws -> [String: Any?] in
+      try await self.run { try await self.client().whatsapp.challenge(phoneNumber: phoneNumber) }
+    }
+
+    AsyncFunction("whatsappVerify") { (verificationCode: String) async throws -> [String: Any?] in
+      try await self.run { try await self.client().whatsapp.verify(verificationCode: verificationCode) }
     }
 
     AsyncFunction("passkeyVerify") {

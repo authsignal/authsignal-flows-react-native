@@ -66,6 +66,14 @@ export type EmailChallengeResponse = {
   retryAfterSeconds?: number;
 };
 
+export type SmsChallengeResponse = {
+  retryAfterSeconds?: number;
+};
+
+export type WhatsappChallengeResponse = {
+  retryAfterSeconds?: number;
+};
+
 export type PasskeyVerifyInput = {
   autofill?: boolean;
   preferImmediatelyAvailableCredentials?: boolean;
