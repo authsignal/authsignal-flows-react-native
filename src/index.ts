@@ -3,6 +3,7 @@ export type { AuthsignalFlowOptions } from './AuthsignalFlow';
 export { AuthsignalFlowEmail } from './email';
 export {
   AuthsignalError,
+  AutofillRequestPendingError,
   FlowNotInitializedError,
   InvalidCodeError,
   MatchedExcludedCredentialError,

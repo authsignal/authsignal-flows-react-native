@@ -46,6 +46,12 @@ export class NetworkError extends AuthsignalError {
   }
 }
 
+export class AutofillRequestPendingError extends AuthsignalError {
+  constructor(message: string) {
+    super('autofill_request_pending', message);
+  }
+}
+
 /** A native or API error that doesn't have a more specific type above. */
 export class UnknownAuthsignalError extends AuthsignalError {}
 
