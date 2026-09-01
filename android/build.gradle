@@ -1,0 +1,22 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'com.authsignal.flowsreactnative'
+version = '0.1.0'
+
+android {
+  namespace "expo.modules.authsignalflows"
+  defaultConfig {
+    versionCode 1
+    versionName '0.1.0'
+  }
+}
+
+dependencies {
+  implementation "com.authsignal:authsignal-flows-android:1.0.0-alpha1"
+
+  // Pinned to match authsignal-flows-android's own kotlinx-serialization-json version exactly
+  implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1"
+}

@@ -21,8 +21,8 @@ export class AuthsignalFlow {
   passkey: AuthsignalFlowPasskey;
 
   constructor({ tenantId, apiUrl }: AuthsignalFlowOptions) {
-    if (Platform.OS !== 'ios') {
-      throw new Error('Authsignal Flows currently only supports iOS');
+    if (Platform.OS !== 'ios' && Platform.OS !== 'android') {
+      throw new Error('Authsignal Flows currently only supports iOS and Android');
     }
 
     this.tenantId = tenantId;
