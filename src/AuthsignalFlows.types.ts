@@ -1,9 +1,3 @@
-export type AuthsignalResponse<T> = {
-  data?: T;
-  error?: string;
-  errorCode?: string;
-};
-
 export enum VerificationMethod {
   EMAIL_OTP = 'EMAIL_OTP',
   SMS = 'SMS',
@@ -69,6 +63,14 @@ export type VerifyResponse = {
 };
 
 export type EmailChallengeResponse = {
+  retryAfterSeconds?: number;
+};
+
+export type SmsChallengeResponse = {
+  retryAfterSeconds?: number;
+};
+
+export type WhatsappChallengeResponse = {
   retryAfterSeconds?: number;
 };
 

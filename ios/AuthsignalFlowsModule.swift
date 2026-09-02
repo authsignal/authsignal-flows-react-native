@@ -15,20 +15,28 @@ public class AuthsignalFlowsModule: Module {
       try self.client().setChallengeToken(challengeToken: challengeToken)
     }
 
-    AsyncFunction("emailChallenge") { () async throws -> [String: Any?] in
-      let authsignal = try self.client()
-
-      let response = await authsignal.email.challenge()
-
-      return try ResponseSerializer.serialize(response)
+    AsyncFunction("emailChallenge") { (email: String?) async throws -> [String: Any?] in
+      try await self.run { try await self.client().email.challenge(email: email) }
     }
 
     AsyncFunction("emailVerify") { (verificationCode: String) async throws -> [String: Any?] in
-      let authsignal = try self.client()
+      try await self.run { try await self.client().email.verify(verificationCode: verificationCode) }
+    }
 
-      let response = await authsignal.email.verify(verificationCode: verificationCode)
+    AsyncFunction("smsChallenge") { (phoneNumber: String?) async throws -> [String: Any?] in
+      try await self.run { try await self.client().sms.challenge(phoneNumber: phoneNumber) }
+    }
 
-      return try ResponseSerializer.serialize(response)
+    AsyncFunction("smsVerify") { (verificationCode: String) async throws -> [String: Any?] in
+      try await self.run { try await self.client().sms.verify(verificationCode: verificationCode) }
+    }
+
+    AsyncFunction("whatsappChallenge") { (phoneNumber: String?) async throws -> [String: Any?] in
+      try await self.run { try await self.client().whatsapp.challenge(phoneNumber: phoneNumber) }
+    }
+
+    AsyncFunction("whatsappVerify") { (verificationCode: String) async throws -> [String: Any?] in
+      try await self.run { try await self.client().whatsapp.verify(verificationCode: verificationCode) }
     }
 
     AsyncFunction("passkeyVerify") {
@@ -37,15 +45,13 @@ public class AuthsignalFlowsModule: Module {
         preferImmediatelyAvailableCredentials: Bool,
         syncCredentials: Bool
       ) async throws -> [String: Any?] in
-      let authsignal = try self.client()
-
-      let response = await authsignal.passkey.verify(
-        autofill: autofill,
-        preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials,
-        syncCredentials: syncCredentials
-      )
-
-      return try ResponseSerializer.serialize(response)
+      try await self.run {
+        try await self.client().passkey.verify(
+          autofill: autofill,
+          preferImmediatelyAvailableCredentials: preferImmediatelyAvailableCredentials,
+          syncCredentials: syncCredentials
+        )
+      }
     }
 
     Function("passkeyCancel") {
@@ -54,6 +60,19 @@ public class AuthsignalFlowsModule: Module {
 
     Function("passkeyIsSupported") { () throws -> Bool in
       try self.client().passkey.isSupported()
+    }
+  }
+
+  /// Runs an SDK call and converts any thrown `AuthsignalError` into an Expo `CodedError`,
+  /// so on the JS side it surfaces as a promise rejection with a matching `.code` rather
+  /// than resolving with a `{ data, error, errorCode }` tuple.
+  private func run<T: Encodable>(_ operation: () async throws -> T) async throws -> [String: Any?] {
+    do {
+      let value = try await operation()
+
+      return try ResponseSerializer.serialize(value)
+    } catch let error as AuthsignalError {
+      throw AuthsignalFlowsError(error)
     }
   }
 

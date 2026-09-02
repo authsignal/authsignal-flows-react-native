@@ -1,22 +1,24 @@
-import type {
-  AuthsignalResponse,
-  PasskeyVerifyInput,
-  VerifyResponse,
-} from './AuthsignalFlows.types';
+import type { PasskeyVerifyInput, VerifyResponse } from './AuthsignalFlows.types';
 import AuthsignalFlowsModule from './AuthsignalFlowsModule';
-import { handleNativeError } from './errors';
+import { AutofillRequestPendingError, mapNativeError } from './errors';
 
 export class AuthsignalFlowPasskey {
   private autofillRequestPending = false;
 
+  /**
+   * @throws {UserCanceledError} if the user dismisses the prompt, or the device has no
+   *   passkeys available.
+   * @throws {AutofillRequestPendingError} if `autofill` is true and an autofill request
+   *   is already pending.
+   */
   async verify({
     autofill = false,
     preferImmediatelyAvailableCredentials = true,
     syncCredentials = false,
-  }: PasskeyVerifyInput = {}): Promise<AuthsignalResponse<VerifyResponse>> {
+  }: PasskeyVerifyInput = {}): Promise<VerifyResponse> {
     if (autofill) {
       if (this.autofillRequestPending) {
-        return {};
+        throw new AutofillRequestPendingError('An autofill request is already pending.');
       }
 
       this.autofillRequestPending = true;
@@ -29,7 +31,7 @@ export class AuthsignalFlowPasskey {
         syncCredentials
       );
     } catch (ex) {
-      return handleNativeError(ex);
+      throw mapNativeError(ex);
     } finally {
       this.autofillRequestPending = false;
     }
