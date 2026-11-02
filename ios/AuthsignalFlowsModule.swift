@@ -39,6 +39,13 @@ public class AuthsignalFlowsModule: Module {
       try await self.run { try await self.client().whatsapp.verify(verificationCode: verificationCode) }
     }
 
+    AsyncFunction("passkeyRegister") {
+      (username: String?, displayName: String?) async throws -> [String: Any?] in
+      try await self.run {
+        try await self.client().passkey.register(username: username, displayName: displayName)
+      }
+    }
+
     AsyncFunction("passkeyVerify") {
       (
         autofill: Bool,

@@ -74,6 +74,11 @@ export type WhatsappChallengeResponse = {
   retryAfterSeconds?: number;
 };
 
+export type PasskeyRegisterInput = {
+  username?: string;
+  displayName?: string;
+};
+
 export type PasskeyVerifyInput = {
   autofill?: boolean;
   preferImmediatelyAvailableCredentials?: boolean;

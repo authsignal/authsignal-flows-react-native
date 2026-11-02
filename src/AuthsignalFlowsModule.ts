@@ -21,6 +21,7 @@ declare class AuthsignalFlowsModule extends NativeModule<{}> {
   whatsappChallenge(phoneNumber?: string): Promise<WhatsappChallengeResponse>;
   whatsappVerify(verificationCode: string): Promise<VerifyResponse>;
 
+  passkeyRegister(username?: string, displayName?: string): Promise<VerifyResponse>;
   passkeyVerify(
     autofill: boolean,
     preferImmediatelyAvailableCredentials: boolean,

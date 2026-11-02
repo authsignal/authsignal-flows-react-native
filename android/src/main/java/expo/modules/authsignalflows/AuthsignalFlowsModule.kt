@@ -44,6 +44,18 @@ class AuthsignalFlowsModule : Module() {
       runSdkCall { client().whatsapp.verify(verificationCode) }
     }
 
+    AsyncFunction("passkeyRegister") Coroutine { username: String?, displayName: String? ->
+      val activity = appContext.throwingActivity
+
+      runSdkCall {
+        client().passkey.register(
+          activity = activity,
+          username = username,
+          displayName = displayName
+        )
+      }
+    }
+
     AsyncFunction("passkeyVerify") Coroutine {
       autofill: Boolean,
       preferImmediatelyAvailableCredentials: Boolean,

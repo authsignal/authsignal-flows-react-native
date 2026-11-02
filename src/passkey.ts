@@ -1,9 +1,28 @@
-import type { PasskeyVerifyInput, VerifyResponse } from './AuthsignalFlows.types';
+import type {
+  PasskeyRegisterInput,
+  PasskeyVerifyInput,
+  VerifyResponse,
+} from './AuthsignalFlows.types';
 import AuthsignalFlowsModule from './AuthsignalFlowsModule';
 import { AutofillRequestPendingError, mapNativeError } from './errors';
 
 export class AuthsignalFlowPasskey {
   private autofillRequestPending = false;
+
+  /**
+   * Creates a passkey for the user and adds it as an authenticator.
+   *
+   * @throws {UserCanceledError} if the user dismisses the prompt.
+   * @throws {MatchedExcludedCredentialError} if the user already has a passkey for this
+   *   account on the device.
+   */
+  async register({ username, displayName }: PasskeyRegisterInput = {}): Promise<VerifyResponse> {
+    try {
+      return await AuthsignalFlowsModule.passkeyRegister(username, displayName);
+    } catch (ex) {
+      throw mapNativeError(ex);
+    }
+  }
 
   /**
    * @throws {UserCanceledError} if the user dismisses the prompt, or the device has no

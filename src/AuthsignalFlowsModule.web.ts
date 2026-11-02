@@ -16,6 +16,7 @@ class AuthsignalFlowsModule extends NativeModule<{}> {
   smsVerify = unsupported;
   whatsappChallenge = unsupported;
   whatsappVerify = unsupported;
+  passkeyRegister = unsupported;
   passkeyVerify = unsupported;
   passkeyCancel = unsupported;
   passkeyIsSupported = (): boolean => false;
