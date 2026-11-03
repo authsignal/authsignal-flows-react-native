@@ -9,6 +9,7 @@ import { AuthsignalFlowWhatsapp } from './whatsapp';
 export type AuthsignalFlowOptions = {
   tenantId: string;
   apiUrl: string;
+  clientId?: string;
 };
 
 export class AuthsignalFlow {
@@ -20,7 +21,7 @@ export class AuthsignalFlow {
   whatsapp: AuthsignalFlowWhatsapp;
   passkey: AuthsignalFlowPasskey;
 
-  constructor({ tenantId, apiUrl }: AuthsignalFlowOptions) {
+  constructor({ tenantId, apiUrl, clientId }: AuthsignalFlowOptions) {
     if (Platform.OS !== 'ios' && Platform.OS !== 'android') {
       throw new Error('Authsignal Flows currently only supports iOS and Android');
     }
@@ -28,7 +29,7 @@ export class AuthsignalFlow {
     this.tenantId = tenantId;
     this.apiUrl = apiUrl;
 
-    AuthsignalFlowsModule.initialize(tenantId, apiUrl);
+    AuthsignalFlowsModule.initialize(tenantId, apiUrl, clientId);
 
     this.email = new AuthsignalFlowEmail();
     this.sms = new AuthsignalFlowSms();

@@ -7,8 +7,8 @@ public class AuthsignalFlowsModule: Module {
   public func definition() -> ModuleDefinition {
     Name("AuthsignalFlows")
 
-    Function("initialize") { (tenantId: String, apiUrl: String) in
-      self.authsignal = AuthsignalFlows(tenantId: tenantId, apiUrl: apiUrl)
+    Function("initialize") { (tenantId: String, apiUrl: String, clientId: String?) in
+      self.authsignal = AuthsignalFlows(tenantId: tenantId, apiUrl: apiUrl, clientId: clientId)
     }
 
     Function("setChallengeToken") { (challengeToken: String) throws in

@@ -9,7 +9,7 @@ import type {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 declare class AuthsignalFlowsModule extends NativeModule<{}> {
-  initialize(tenantId: string, apiUrl: string): void;
+  initialize(tenantId: string, apiUrl: string, clientId?: string): void;
   setChallengeToken(challengeToken: string): void;
 
   emailChallenge(email?: string): Promise<EmailChallengeResponse>;

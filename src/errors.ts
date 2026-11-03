@@ -32,10 +32,17 @@ export class MatchedExcludedCredentialError extends AuthsignalError {
   }
 }
 
-/** `setChallengeToken` hasn't been called yet. */
+/** No `clientId` was provided and `setChallengeToken` hasn't been called yet. */
 export class FlowNotInitializedError extends AuthsignalError {
   constructor(message: string) {
     super('flow_not_initialized', message);
+  }
+}
+
+/** The session has expired. Challenge methods start a new session automatically, but `verify` calls throw this. */
+export class SessionExpiredError extends AuthsignalError {
+  constructor(message: string) {
+    super('session_expired', message);
   }
 }
 
@@ -60,6 +67,7 @@ const ERROR_TYPES: Record<string, new (message: string) => AuthsignalError> = {
   user_canceled: UserCanceledError,
   matched_excluded_credential: MatchedExcludedCredentialError,
   flow_not_initialized: FlowNotInitializedError,
+  session_expired: SessionExpiredError,
   network_error: NetworkError,
 };
 

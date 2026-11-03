@@ -8,6 +8,7 @@ export {
   InvalidCodeError,
   MatchedExcludedCredentialError,
   NetworkError,
+  SessionExpiredError,
   UnknownAuthsignalError,
   UserCanceledError,
 } from './errors';

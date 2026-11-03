@@ -12,8 +12,8 @@ class AuthsignalFlowsModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("AuthsignalFlows")
 
-    Function("initialize") { tenantId: String, apiUrl: String ->
-      authsignal = AuthsignalFlows(tenantId = tenantId, apiUrl = apiUrl)
+    Function("initialize") { tenantId: String, apiUrl: String, clientId: String? ->
+      authsignal = AuthsignalFlows(tenantId = tenantId, apiUrl = apiUrl, clientId = clientId)
     }
 
     Function("setChallengeToken") { challengeToken: String ->
