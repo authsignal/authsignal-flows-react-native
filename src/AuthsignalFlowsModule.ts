@@ -29,6 +29,9 @@ declare class AuthsignalFlowsModule extends NativeModule<{}> {
   ): Promise<VerifyResponse>;
   passkeyCancel(): void;
   passkeyIsSupported(): boolean;
+
+  sessionGetAccessToken(): Promise<string | null>;
+  sessionRevoke(): Promise<void>;
 }
 
 export default requireNativeModule<AuthsignalFlowsModule>('AuthsignalFlows');

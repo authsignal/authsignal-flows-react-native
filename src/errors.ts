@@ -39,10 +39,10 @@ export class FlowNotInitializedError extends AuthsignalError {
   }
 }
 
-/** The session has expired. Challenge methods start a new session automatically, but `verify` calls throw this. */
-export class SessionExpiredError extends AuthsignalError {
+/** The flow has expired. Challenge methods start a new flow automatically, but `verify` calls throw this. */
+export class FlowExpiredError extends AuthsignalError {
   constructor(message: string) {
-    super('session_expired', message);
+    super('flow_expired', message);
   }
 }
 
@@ -67,7 +67,7 @@ const ERROR_TYPES: Record<string, new (message: string) => AuthsignalError> = {
   user_canceled: UserCanceledError,
   matched_excluded_credential: MatchedExcludedCredentialError,
   flow_not_initialized: FlowNotInitializedError,
-  session_expired: SessionExpiredError,
+  flow_expired: FlowExpiredError,
   network_error: NetworkError,
 };
 

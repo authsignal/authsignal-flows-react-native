@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import AuthsignalFlowsModule from './AuthsignalFlowsModule';
 import { AuthsignalFlowEmail } from './email';
 import { AuthsignalFlowPasskey } from './passkey';
+import { AuthsignalFlowSession } from './session';
 import { AuthsignalFlowSms } from './sms';
 import { AuthsignalFlowWhatsapp } from './whatsapp';
 
@@ -20,6 +21,7 @@ export class AuthsignalFlow {
   sms: AuthsignalFlowSms;
   whatsapp: AuthsignalFlowWhatsapp;
   passkey: AuthsignalFlowPasskey;
+  session: AuthsignalFlowSession;
 
   constructor({ tenantId, apiUrl, clientId }: AuthsignalFlowOptions) {
     if (Platform.OS !== 'ios' && Platform.OS !== 'android') {
@@ -35,6 +37,7 @@ export class AuthsignalFlow {
     this.sms = new AuthsignalFlowSms();
     this.whatsapp = new AuthsignalFlowWhatsapp();
     this.passkey = new AuthsignalFlowPasskey();
+    this.session = new AuthsignalFlowSession();
   }
 
   setChallengeToken(challengeToken: string): void {

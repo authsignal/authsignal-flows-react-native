@@ -2,6 +2,7 @@ package expo.modules.authsignalflows
 
 import com.authsignal.flows.AuthsignalFlows
 import com.authsignal.flows.AuthsignalFlowsError
+import expo.modules.kotlin.exception.Exceptions
 import expo.modules.kotlin.functions.Coroutine
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
@@ -13,7 +14,9 @@ class AuthsignalFlowsModule : Module() {
     Name("AuthsignalFlows")
 
     Function("initialize") { tenantId: String, apiUrl: String, clientId: String? ->
-      authsignal = AuthsignalFlows(tenantId = tenantId, apiUrl = apiUrl, clientId = clientId)
+      val context = appContext.reactContext ?: throw Exceptions.ReactContextLost()
+
+      authsignal = AuthsignalFlows(context = context, tenantId = tenantId, apiUrl = apiUrl, clientId = clientId)
     }
 
     Function("setChallengeToken") { challengeToken: String ->
@@ -79,11 +82,27 @@ class AuthsignalFlowsModule : Module() {
     Function("passkeyIsSupported") {
       client().passkey.isSupported()
     }
+
+    AsyncFunction("sessionGetAccessToken") Coroutine { ->
+      runSdkValue { client().session.getAccessToken() }
+    }
+
+    AsyncFunction("sessionRevoke") Coroutine { ->
+      client().session.revoke()
+    }
   }
 
   private suspend inline fun <reified T> runSdkCall(crossinline operation: suspend () -> T): Map<String, Any?> {
     return try {
       ResponseSerializer.serialize(operation())
+    } catch (error: AuthsignalFlowsError) {
+      throw AuthsignalFlowsException(error)
+    }
+  }
+
+  private suspend inline fun <T> runSdkValue(crossinline operation: suspend () -> T): T {
+    return try {
+      operation()
     } catch (error: AuthsignalFlowsError) {
       throw AuthsignalFlowsException(error)
     }

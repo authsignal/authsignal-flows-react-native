@@ -13,7 +13,7 @@ export class AuthsignalFlowSms {
 
   /**
    * @throws {InvalidCodeError} if `verificationCode` doesn't match.
-   * @throws {SessionExpiredError} if the session has expired.
+   * @throws {FlowExpiredError} if the flow has expired.
    */
   async verify(verificationCode: string): Promise<VerifyResponse> {
     try {

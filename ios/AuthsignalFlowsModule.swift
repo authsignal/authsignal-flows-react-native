@@ -68,6 +68,14 @@ public class AuthsignalFlowsModule: Module {
     Function("passkeyIsSupported") { () throws -> Bool in
       try self.client().passkey.isSupported()
     }
+
+    AsyncFunction("sessionGetAccessToken") { () async throws -> String? in
+      try await self.runValue { try await self.client().session.getAccessToken() }
+    }
+
+    AsyncFunction("sessionRevoke") { () async throws in
+      try await self.client().session.revoke()
+    }
   }
 
   /// Runs an SDK call and converts any thrown `AuthsignalError` into an Expo `CodedError`,
@@ -78,6 +86,14 @@ public class AuthsignalFlowsModule: Module {
       let value = try await operation()
 
       return try ResponseSerializer.serialize(value)
+    } catch let error as AuthsignalError {
+      throw AuthsignalFlowsError(error)
+    }
+  }
+
+  private func runValue<T>(_ operation: () async throws -> T) async throws -> T {
+    do {
+      return try await operation()
     } catch let error as AuthsignalError {
       throw AuthsignalFlowsError(error)
     }
