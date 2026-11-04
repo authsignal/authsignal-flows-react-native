@@ -83,6 +83,44 @@ class AuthsignalFlowsModule : Module() {
       client().passkey.isSupported()
     }
 
+    AsyncFunction("inappGetCredential") Coroutine { username: String? ->
+      runSdkValue { client().inapp.getCredential(username) }?.let { ResponseSerializer.serialize(it) }
+    }
+
+    // keychainAccess only applies on iOS
+    AsyncFunction("inappAddCredential") Coroutine {
+      requireUserAuthentication: Boolean,
+      _: String?,
+      username: String? ->
+      runSdkCall {
+        client().inapp.addCredential(userAuthenticationRequired = requireUserAuthentication, username = username)
+      }
+    }
+
+    AsyncFunction("inappRemoveCredential") Coroutine { username: String? ->
+      runSdkValue { client().inapp.removeCredential(username) }
+    }
+
+    AsyncFunction("inappVerify") Coroutine { username: String? ->
+      runSdkCall { client().inapp.verify(username) }
+    }
+
+    AsyncFunction("inappCreatePin") Coroutine { pin: String, username: String ->
+      runSdkCall { client().inapp.createPin(pin, username) }
+    }
+
+    AsyncFunction("inappVerifyPin") Coroutine { pin: String, username: String ->
+      runSdkCall { client().inapp.verifyPin(pin, username) }
+    }
+
+    AsyncFunction("inappDeletePin") Coroutine { username: String ->
+      runSdkValue { client().inapp.deletePin(username) }
+    }
+
+    Function("inappGetAllPinUsernames") {
+      client().inapp.getAllPinUsernames()
+    }
+
     AsyncFunction("sessionGetAccessToken") Coroutine { ->
       runSdkValue { client().session.getAccessToken() }
     }

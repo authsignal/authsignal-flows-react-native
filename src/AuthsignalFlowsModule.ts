@@ -1,6 +1,7 @@
 import { NativeModule, requireNativeModule } from 'expo';
 
 import type {
+  AppCredential,
   EmailChallengeResponse,
   SmsChallengeResponse,
   VerifyResponse,
@@ -29,6 +30,19 @@ declare class AuthsignalFlowsModule extends NativeModule<{}> {
   ): Promise<VerifyResponse>;
   passkeyCancel(): void;
   passkeyIsSupported(): boolean;
+
+  inappGetCredential(username?: string): Promise<AppCredential | null>;
+  inappAddCredential(
+    requireUserAuthentication: boolean,
+    keychainAccess?: string,
+    username?: string
+  ): Promise<VerifyResponse>;
+  inappRemoveCredential(username?: string): Promise<void>;
+  inappVerify(username?: string): Promise<VerifyResponse>;
+  inappCreatePin(pin: string, username: string): Promise<VerifyResponse>;
+  inappVerifyPin(pin: string, username: string): Promise<VerifyResponse>;
+  inappDeletePin(username: string): Promise<void>;
+  inappGetAllPinUsernames(): string[];
 
   sessionGetAccessToken(): Promise<string | null>;
   sessionRevoke(): Promise<void>;

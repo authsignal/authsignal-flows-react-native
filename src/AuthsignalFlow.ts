@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 
 import AuthsignalFlowsModule from './AuthsignalFlowsModule';
 import { AuthsignalFlowEmail } from './email';
+import { AuthsignalFlowInApp } from './inapp';
 import { AuthsignalFlowPasskey } from './passkey';
 import { AuthsignalFlowSession } from './session';
 import { AuthsignalFlowSms } from './sms';
@@ -21,6 +22,7 @@ export class AuthsignalFlow {
   sms: AuthsignalFlowSms;
   whatsapp: AuthsignalFlowWhatsapp;
   passkey: AuthsignalFlowPasskey;
+  inapp: AuthsignalFlowInApp;
   session: AuthsignalFlowSession;
 
   constructor({ tenantId, apiUrl, clientId }: AuthsignalFlowOptions) {
@@ -37,6 +39,7 @@ export class AuthsignalFlow {
     this.sms = new AuthsignalFlowSms();
     this.whatsapp = new AuthsignalFlowWhatsapp();
     this.passkey = new AuthsignalFlowPasskey();
+    this.inapp = new AuthsignalFlowInApp();
     this.session = new AuthsignalFlowSession();
   }
 

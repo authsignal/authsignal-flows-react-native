@@ -84,3 +84,45 @@ export type PasskeyVerifyInput = {
   preferImmediatelyAvailableCredentials?: boolean;
   syncCredentials?: boolean;
 };
+
+export enum KeychainAccess {
+  afterFirstUnlock = 'afterFirstUnlock',
+  afterFirstUnlockThisDeviceOnly = 'afterFirstUnlockThisDeviceOnly',
+  whenUnlocked = 'whenUnlocked',
+  whenUnlockedThisDeviceOnly = 'whenUnlockedThisDeviceOnly',
+  whenPasscodeSetThisDeviceOnly = 'whenPasscodeSetThisDeviceOnly',
+}
+
+export type AppCredential = {
+  credentialId: string;
+  createdAt: string;
+  userId: string;
+  lastAuthenticatedAt?: string;
+  expiresAt?: string;
+};
+
+export type InAppCredentialInput = {
+  username?: string;
+};
+
+export type InAppAddCredentialInput = {
+  username?: string;
+  /** Require biometrics or the device passcode each time the credential is used. */
+  requireUserAuthentication?: boolean;
+  /** iOS only. Defaults to `whenUnlockedThisDeviceOnly`. */
+  keychainAccess?: KeychainAccess;
+};
+
+export type CreatePinInput = {
+  pin: string;
+  username: string;
+};
+
+export type VerifyPinInput = {
+  pin: string;
+  username: string;
+};
+
+export type DeletePinInput = {
+  username: string;
+};

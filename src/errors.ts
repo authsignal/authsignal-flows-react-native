@@ -46,6 +46,27 @@ export class FlowExpiredError extends AuthsignalError {
   }
 }
 
+/** The device has no in-app credential, or (on Android) no passkeys available. */
+export class CredentialNotFoundError extends AuthsignalError {
+  constructor(message: string) {
+    super('credential_not_found', message);
+  }
+}
+
+/** The PIN isn't at least 4 digits. */
+export class InvalidPinFormatError extends AuthsignalError {
+  constructor(message: string) {
+    super('invalid_pin_format', message);
+  }
+}
+
+/** The PIN entered doesn't match the one stored on this device. */
+export class InvalidPinError extends AuthsignalError {
+  constructor(message: string) {
+    super('invalid_pin', message);
+  }
+}
+
 /** The request failed before reaching the API, e.g. no network connection. */
 export class NetworkError extends AuthsignalError {
   constructor(message: string) {
@@ -68,6 +89,9 @@ const ERROR_TYPES: Record<string, new (message: string) => AuthsignalError> = {
   matched_excluded_credential: MatchedExcludedCredentialError,
   flow_not_initialized: FlowNotInitializedError,
   flow_expired: FlowExpiredError,
+  credential_not_found: CredentialNotFoundError,
+  invalid_pin_format: InvalidPinFormatError,
+  invalid_pin: InvalidPinError,
   network_error: NetworkError,
 };
 

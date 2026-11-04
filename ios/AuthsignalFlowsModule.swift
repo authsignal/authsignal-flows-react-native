@@ -69,6 +69,50 @@ public class AuthsignalFlowsModule: Module {
       try self.client().passkey.isSupported()
     }
 
+    AsyncFunction("inappGetCredential") { (username: String?) async throws -> [String: Any?]? in
+      guard let credential = try await self.runValue({ try await self.client().inapp.getCredential(username: username) })
+      else {
+        return nil
+      }
+
+      return try ResponseSerializer.serialize(credential)
+    }
+
+    AsyncFunction("inappAddCredential") {
+      (requireUserAuthentication: Bool, keychainAccess: String?, username: String?) async throws -> [String: Any?] in
+      try await self.run {
+        try await self.client().inapp.addCredential(
+          keychainAccess: Self.keychainAccess(from: keychainAccess),
+          userPresenceRequired: requireUserAuthentication,
+          username: username
+        )
+      }
+    }
+
+    AsyncFunction("inappRemoveCredential") { (username: String?) async throws in
+      try await self.runValue { try await self.client().inapp.removeCredential(username: username) }
+    }
+
+    AsyncFunction("inappVerify") { (username: String?) async throws -> [String: Any?] in
+      try await self.run { try await self.client().inapp.verify(username: username) }
+    }
+
+    AsyncFunction("inappCreatePin") { (pin: String, username: String) async throws -> [String: Any?] in
+      try await self.run { try await self.client().inapp.createPin(pin: pin, username: username) }
+    }
+
+    AsyncFunction("inappVerifyPin") { (pin: String, username: String) async throws -> [String: Any?] in
+      try await self.run { try await self.client().inapp.verifyPin(pin: pin, username: username) }
+    }
+
+    AsyncFunction("inappDeletePin") { (username: String) async throws in
+      try await self.runValue { try await self.client().inapp.deletePin(username: username) }
+    }
+
+    Function("inappGetAllPinUsernames") { () throws -> [String] in
+      try self.client().inapp.getAllPinUsernames()
+    }
+
     AsyncFunction("sessionGetAccessToken") { () async throws -> String? in
       try await self.runValue { try await self.client().session.getAccessToken() }
     }
@@ -96,6 +140,16 @@ public class AuthsignalFlowsModule: Module {
       return try await operation()
     } catch let error as AuthsignalError {
       throw AuthsignalFlowsError(error)
+    }
+  }
+
+  private static func keychainAccess(from value: String?) -> KeychainAccess {
+    switch value {
+    case "afterFirstUnlock": return .afterFirstUnlock
+    case "afterFirstUnlockThisDeviceOnly": return .afterFirstUnlockThisDeviceOnly
+    case "whenUnlocked": return .whenUnlocked
+    case "whenPasscodeSetThisDeviceOnly": return .whenPasscodeSetThisDeviceOnly
+    default: return .whenUnlockedThisDeviceOnly
     }
   }
 
