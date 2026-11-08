@@ -107,9 +107,7 @@ export type InAppCredentialInput = {
 
 export type InAppAddCredentialInput = {
   username?: string;
-  /** Require biometrics or the device passcode each time the credential is used. */
   requireUserAuthentication?: boolean;
-  /** iOS only. Defaults to `whenUnlockedThisDeviceOnly`. */
   keychainAccess?: KeychainAccess;
 };
 
@@ -125,4 +123,47 @@ export type VerifyPinInput = {
 
 export type DeletePinInput = {
   username: string;
+};
+
+export type PushChallengeResponse = {
+  verificationCode?: string;
+};
+
+export enum PushChallengeStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+}
+
+export type PushVerifyResponse = {
+  status: PushChallengeStatus;
+  action?: FlowAction;
+  challengeToken?: string;
+  user?: FlowUser;
+};
+
+export type PushChallenge = {
+  challengeId: string;
+  actionCode?: string;
+  deviceId?: string;
+  userAgent?: string;
+  ipAddress?: string;
+  expiresAt?: number;
+};
+
+export type PushAddCredentialInput = {
+  pushToken?: string;
+  requireUserAuthentication?: boolean;
+  keychainAccess?: KeychainAccess;
+};
+
+export type PushUpdateCredentialInput = {
+  pushToken?: string;
+  resetExpiry?: boolean;
+};
+
+export type PushUpdateChallengeInput = {
+  challengeId: string;
+  approved: boolean;
+  verificationCode?: string;
 };

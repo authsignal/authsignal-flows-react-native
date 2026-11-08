@@ -3,6 +3,9 @@ import { NativeModule, requireNativeModule } from 'expo';
 import type {
   AppCredential,
   EmailChallengeResponse,
+  PushChallenge,
+  PushChallengeResponse,
+  PushVerifyResponse,
   SmsChallengeResponse,
   VerifyResponse,
   WhatsappChallengeResponse,
@@ -43,6 +46,23 @@ declare class AuthsignalFlowsModule extends NativeModule<{}> {
   inappVerifyPin(pin: string, username: string): Promise<VerifyResponse>;
   inappDeletePin(username: string): Promise<void>;
   inappGetAllPinUsernames(): string[];
+
+  pushChallenge(): Promise<PushChallengeResponse>;
+  pushVerify(): Promise<PushVerifyResponse>;
+  pushGetCredential(): Promise<AppCredential | null>;
+  pushAddCredential(
+    pushToken: string | undefined,
+    requireUserAuthentication: boolean,
+    keychainAccess?: string
+  ): Promise<VerifyResponse>;
+  pushRemoveCredential(): Promise<void>;
+  pushUpdateCredential(pushToken: string | undefined, resetExpiry: boolean): Promise<void>;
+  pushGetChallenge(): Promise<PushChallenge | null>;
+  pushUpdateChallenge(
+    challengeId: string,
+    approved: boolean,
+    verificationCode?: string
+  ): Promise<void>;
 
   sessionGetAccessToken(): Promise<string | null>;
   sessionRevoke(): Promise<void>;

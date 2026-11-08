@@ -87,7 +87,6 @@ class AuthsignalFlowsModule : Module() {
       runSdkValue { client().inapp.getCredential(username) }?.let { ResponseSerializer.serialize(it) }
     }
 
-    // keychainAccess only applies on iOS
     AsyncFunction("inappAddCredential") Coroutine {
       requireUserAuthentication: Boolean,
       _: String?,
@@ -119,6 +118,46 @@ class AuthsignalFlowsModule : Module() {
 
     Function("inappGetAllPinUsernames") {
       client().inapp.getAllPinUsernames()
+    }
+
+    AsyncFunction("pushChallenge") Coroutine { ->
+      runSdkCall { client().push.challenge() }
+    }
+
+    AsyncFunction("pushVerify") Coroutine { ->
+      runSdkCall { client().push.verify() }
+    }
+
+    AsyncFunction("pushGetCredential") Coroutine { ->
+      runSdkValue { client().push.getCredential() }?.let { ResponseSerializer.serialize(it) }
+    }
+
+    AsyncFunction("pushAddCredential") Coroutine {
+      pushToken: String?,
+      requireUserAuthentication: Boolean,
+      _: String? ->
+      runSdkCall {
+        client().push.addCredential(pushToken = pushToken, userAuthenticationRequired = requireUserAuthentication)
+      }
+    }
+
+    AsyncFunction("pushRemoveCredential") Coroutine { ->
+      runSdkValue { client().push.removeCredential() }
+    }
+
+    AsyncFunction("pushUpdateCredential") Coroutine { pushToken: String?, resetExpiry: Boolean ->
+      runSdkValue { client().push.updateCredential(pushToken, resetExpiry) }
+    }
+
+    AsyncFunction("pushGetChallenge") Coroutine { ->
+      runSdkValue { client().push.getChallenge() }?.let { ResponseSerializer.serialize(it) }
+    }
+
+    AsyncFunction("pushUpdateChallenge") Coroutine {
+      challengeId: String,
+      approved: Boolean,
+      verificationCode: String? ->
+      runSdkValue { client().push.updateChallenge(challengeId, approved, verificationCode) }
     }
 
     AsyncFunction("sessionGetAccessToken") Coroutine { ->

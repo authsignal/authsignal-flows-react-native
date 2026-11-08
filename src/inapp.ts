@@ -11,9 +11,6 @@ import AuthsignalFlowsModule from './AuthsignalFlowsModule';
 import { mapNativeError } from './errors';
 
 export class AuthsignalFlowInApp {
-  /**
-   * Returns the credential for this device, or `null` if the device has no in-app key.
-   */
   async getCredential({ username }: InAppCredentialInput = {}): Promise<AppCredential | null> {
     try {
       return await AuthsignalFlowsModule.inappGetCredential(username);
@@ -22,9 +19,6 @@ export class AuthsignalFlowInApp {
     }
   }
 
-  /**
-   * Creates a key on this device and adds it as an in-app authenticator for the current flow.
-   */
   async addCredential({
     username,
     requireUserAuthentication = false,
@@ -42,8 +36,6 @@ export class AuthsignalFlowInApp {
   }
 
   /**
-   * Removes the in-app authenticator for this device and deletes the key.
-   *
    * @throws {CredentialNotFoundError} if the device has no in-app key.
    */
   async removeCredential({ username }: InAppCredentialInput = {}): Promise<void> {
@@ -55,9 +47,6 @@ export class AuthsignalFlowInApp {
   }
 
   /**
-   * Verifies the current flow step by signing a challenge with this device's key.
-   * Starts a new flow if a client ID is configured and no flow is in progress.
-   *
    * @throws {CredentialNotFoundError} if the device has no in-app key.
    */
   async verify({ username }: InAppCredentialInput = {}): Promise<VerifyResponse> {
@@ -69,8 +58,6 @@ export class AuthsignalFlowInApp {
   }
 
   /**
-   * Adds an in-app credential for `username` and protects it with a PIN stored on this device.
-   *
    * @throws {InvalidPinFormatError} if the PIN isn't at least 4 digits.
    */
   async createPin({ pin, username }: CreatePinInput): Promise<VerifyResponse> {
@@ -82,8 +69,6 @@ export class AuthsignalFlowInApp {
   }
 
   /**
-   * Checks the PIN for `username`, then verifies the current flow step with its in-app credential.
-   *
    * @throws {InvalidPinError} if the PIN doesn't match.
    */
   async verifyPin({ pin, username }: VerifyPinInput): Promise<VerifyResponse> {
@@ -94,9 +79,6 @@ export class AuthsignalFlowInApp {
     }
   }
 
-  /**
-   * Removes the in-app credential for `username` and deletes its PIN.
-   */
   async deletePin({ username }: DeletePinInput): Promise<void> {
     try {
       await AuthsignalFlowsModule.inappDeletePin(username);

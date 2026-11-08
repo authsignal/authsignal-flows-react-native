@@ -32,35 +32,31 @@ export class MatchedExcludedCredentialError extends AuthsignalError {
   }
 }
 
-/** No `clientId` was provided and `setChallengeToken` hasn't been called yet. */
+/** `setChallengeToken` hasn't been called yet. */
 export class FlowNotInitializedError extends AuthsignalError {
   constructor(message: string) {
     super('flow_not_initialized', message);
   }
 }
 
-/** The flow has expired. Challenge methods start a new flow automatically, but `verify` calls throw this. */
 export class FlowExpiredError extends AuthsignalError {
   constructor(message: string) {
     super('flow_expired', message);
   }
 }
 
-/** The device has no in-app credential, or (on Android) no passkeys available. */
 export class CredentialNotFoundError extends AuthsignalError {
   constructor(message: string) {
     super('credential_not_found', message);
   }
 }
 
-/** The PIN isn't at least 4 digits. */
 export class InvalidPinFormatError extends AuthsignalError {
   constructor(message: string) {
     super('invalid_pin_format', message);
   }
 }
 
-/** The PIN entered doesn't match the one stored on this device. */
 export class InvalidPinError extends AuthsignalError {
   constructor(message: string) {
     super('invalid_pin', message);

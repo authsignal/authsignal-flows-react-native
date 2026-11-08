@@ -113,6 +113,62 @@ public class AuthsignalFlowsModule: Module {
       try self.client().inapp.getAllPinUsernames()
     }
 
+    AsyncFunction("pushChallenge") { () async throws -> [String: Any?] in
+      try await self.run { try await self.client().push.challenge() }
+    }
+
+    AsyncFunction("pushVerify") { () async throws -> [String: Any?] in
+      try await self.run { try await self.client().push.verify() }
+    }
+
+    AsyncFunction("pushGetCredential") { () async throws -> [String: Any?]? in
+      guard let credential = try await self.runValue({ try await self.client().push.getCredential() }) else {
+        return nil
+      }
+
+      return try ResponseSerializer.serialize(credential)
+    }
+
+    AsyncFunction("pushAddCredential") {
+      (pushToken: String?, requireUserAuthentication: Bool, keychainAccess: String?) async throws -> [String: Any?] in
+      try await self.run {
+        try await self.client().push.addCredential(
+          pushToken: pushToken,
+          keychainAccess: Self.keychainAccess(from: keychainAccess),
+          userPresenceRequired: requireUserAuthentication
+        )
+      }
+    }
+
+    AsyncFunction("pushRemoveCredential") { () async throws in
+      try await self.runValue { try await self.client().push.removeCredential() }
+    }
+
+    AsyncFunction("pushUpdateCredential") { (pushToken: String?, resetExpiry: Bool) async throws in
+      try await self.runValue {
+        try await self.client().push.updateCredential(pushToken: pushToken, resetExpiry: resetExpiry)
+      }
+    }
+
+    AsyncFunction("pushGetChallenge") { () async throws -> [String: Any?]? in
+      guard let challenge = try await self.runValue({ try await self.client().push.getChallenge() }) else {
+        return nil
+      }
+
+      return try ResponseSerializer.serialize(challenge)
+    }
+
+    AsyncFunction("pushUpdateChallenge") {
+      (challengeId: String, approved: Bool, verificationCode: String?) async throws in
+      try await self.runValue {
+        try await self.client().push.updateChallenge(
+          challengeId: challengeId,
+          approved: approved,
+          verificationCode: verificationCode
+        )
+      }
+    }
+
     AsyncFunction("sessionGetAccessToken") { () async throws -> String? in
       try await self.runValue { try await self.client().session.getAccessToken() }
     }

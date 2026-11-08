@@ -4,6 +4,7 @@ import AuthsignalFlowsModule from './AuthsignalFlowsModule';
 import { AuthsignalFlowEmail } from './email';
 import { AuthsignalFlowInApp } from './inapp';
 import { AuthsignalFlowPasskey } from './passkey';
+import { AuthsignalFlowPush } from './push';
 import { AuthsignalFlowSession } from './session';
 import { AuthsignalFlowSms } from './sms';
 import { AuthsignalFlowWhatsapp } from './whatsapp';
@@ -23,6 +24,7 @@ export class AuthsignalFlow {
   whatsapp: AuthsignalFlowWhatsapp;
   passkey: AuthsignalFlowPasskey;
   inapp: AuthsignalFlowInApp;
+  push: AuthsignalFlowPush;
   session: AuthsignalFlowSession;
 
   constructor({ tenantId, apiUrl, clientId }: AuthsignalFlowOptions) {
@@ -40,6 +42,7 @@ export class AuthsignalFlow {
     this.whatsapp = new AuthsignalFlowWhatsapp();
     this.passkey = new AuthsignalFlowPasskey();
     this.inapp = new AuthsignalFlowInApp();
+    this.push = new AuthsignalFlowPush();
     this.session = new AuthsignalFlowSession();
   }
 
