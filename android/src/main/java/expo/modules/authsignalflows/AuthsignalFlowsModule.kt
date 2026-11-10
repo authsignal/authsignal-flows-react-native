@@ -79,6 +79,10 @@ class AuthsignalFlowsModule : Module() {
       authsignal?.passkey?.cancel()
     }
 
+    AsyncFunction("passkeyShouldPromptToCreatePasskey") Coroutine { username: String? ->
+      runSdkValue { client().passkey.shouldPromptToCreatePasskey(username) }
+    }
+
     Function("passkeyIsSupported") {
       client().passkey.isSupported()
     }

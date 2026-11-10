@@ -32,6 +32,7 @@ declare class AuthsignalFlowsModule extends NativeModule<{}> {
     syncCredentials: boolean
   ): Promise<VerifyResponse>;
   passkeyCancel(): void;
+  passkeyShouldPromptToCreatePasskey(username?: string): Promise<boolean>;
   passkeyIsSupported(): boolean;
 
   inappGetCredential(username?: string): Promise<AppCredential | null>;

@@ -79,6 +79,10 @@ export type PasskeyRegisterInput = {
   displayName?: string;
 };
 
+export type PasskeyShouldPromptInput = {
+  username?: string;
+};
+
 export type PasskeyVerifyInput = {
   autofill?: boolean;
   preferImmediatelyAvailableCredentials?: boolean;

@@ -1,5 +1,6 @@
 import type {
   PasskeyRegisterInput,
+  PasskeyShouldPromptInput,
   PasskeyVerifyInput,
   VerifyResponse,
 } from './AuthsignalFlows.types';
@@ -58,6 +59,14 @@ export class AuthsignalFlowPasskey {
 
   cancel(): void {
     AuthsignalFlowsModule.passkeyCancel();
+  }
+
+  async shouldPromptToCreatePasskey({ username }: PasskeyShouldPromptInput = {}): Promise<boolean> {
+    try {
+      return await AuthsignalFlowsModule.passkeyShouldPromptToCreatePasskey(username);
+    } catch (ex) {
+      throw mapNativeError(ex);
+    }
   }
 
   isSupported(): boolean {

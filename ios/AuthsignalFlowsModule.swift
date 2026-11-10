@@ -65,6 +65,10 @@ public class AuthsignalFlowsModule: Module {
       self.authsignal?.passkey.cancel()
     }
 
+    AsyncFunction("passkeyShouldPromptToCreatePasskey") { (username: String?) async throws -> Bool in
+      try await self.runValue { try await self.client().passkey.shouldPromptToCreatePasskey(username: username) }
+    }
+
     Function("passkeyIsSupported") { () throws -> Bool in
       try self.client().passkey.isSupported()
     }
